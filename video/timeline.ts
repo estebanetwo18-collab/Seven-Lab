@@ -21,7 +21,13 @@ const NOMINAL = [
   ['logo', 33],
 ] as const;
 
-export const TOTAL_SECONDS = 36;
+/**
+ * Velocidad global de las animaciones. 1 = guion original (36 s);
+ * 0,8 = todo un 20 % más lento (45 s). Cambia cortes y curvas por igual.
+ */
+export const SPEED = 0.8;
+const NOMINAL_TOTAL = 36;
+export const TOTAL_SECONDS = NOMINAL_TOTAL / SPEED;
 export const FPS = 60;
 
 const beats: number[] = (beatsFile as { beats: number[] }).beats ?? [];
@@ -42,9 +48,12 @@ const snap = (s: number) => {
 export type SceneId = (typeof NOMINAL)[number][0];
 
 export const SCENES = NOMINAL.map(([id, start], i) => {
-  const from = Math.round(snap(start) * FPS);
-  const next = i < NOMINAL.length - 1 ? Math.round(snap(NOMINAL[i + 1][1]) * FPS) : TOTAL_SECONDS * FPS;
+  const from = Math.round(snap(start / SPEED) * FPS);
+  const next = i < NOMINAL.length - 1 ? Math.round(snap(NOMINAL[i + 1][1] / SPEED) * FPS) : Math.round(TOTAL_SECONDS * FPS);
   return { id: id as SceneId, from, frames: next - from };
 });
 
 export const HAS_MUSIC = beats.length > 0;
+
+/** Poné en true cuando exista public/voz.mp3 (voz en off de ElevenLabs). */
+export const HAS_VOICE = false;

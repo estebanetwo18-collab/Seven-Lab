@@ -2,12 +2,13 @@ import type { CSSProperties, ReactNode } from 'react';
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { C } from '../src/shared/tokens';
 import { lerp, prog } from '../src/shared/motion';
+import { SPEED } from './timeline';
 
-/** Tiempo local de la escena, en segundos. */
+/** Tiempo local de la escena en segundos "de guion" (escalado por SPEED). */
 export const useT = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  return frame / fps;
+  return (frame / fps) * SPEED;
 };
 
 /** Orientación + factor de escala para reutilizar cada escena en 16:9 y 9:16. */

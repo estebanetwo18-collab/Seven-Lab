@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { AbsoluteFill, Audio, Img, Sequence, staticFile } from 'remotion';
 import { C, FONT } from '../src/shared/tokens';
 import { ImgContext } from '../src/shared/ImgContext';
-import { FPS, HAS_MUSIC, SCENES, type SceneId } from './timeline';
+import { FPS, HAS_MUSIC, HAS_VOICE, SCENES, type SceneId } from './timeline';
 import { Adentro, Cifras, Franja, Intro, Lista, Montaje, Propuesta } from './scenes/part1';
 import { Busqueda, Contenido, Entrena, Logo, Montaje2, Pilares, Precio, WhatsApp } from './scenes/part2';
 
@@ -46,7 +46,9 @@ export const SevenLabPitch: FC = () => (
         );
       })}
       {/* Si hay música (public/music.mp3 + video/beats.json), se agrega sola. */}
-      {HAS_MUSIC && <Audio src={staticFile('music.mp3')} />}
+      {HAS_MUSIC && <Audio src={staticFile('music.mp3')} volume={HAS_VOICE ? 0.35 : 1} />}
+      {/* Voz en off (docs/voz-en-off.md): public/voz.mp3 + HAS_VOICE = true. */}
+      {HAS_VOICE && <Audio src={staticFile('voz.mp3')} />}
     </AbsoluteFill>
   </ImgContext.Provider>
 );

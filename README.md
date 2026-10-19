@@ -40,9 +40,9 @@ Salidas en `public/video/`:
 
 | Archivo | Qué es |
 |---|---|
-| `sevenlab-pitch.mp4` | 1920×1080, 60 fps, H.264, CRF 18 (~9 MB) |
-| `sevenlab-pitch-vertical.mp4` | 1080×1920 para WhatsApp/Instagram (~10 MB) |
-| `poster.jpg` / `poster-vertical.jpg` | Pósters del hero (cuadro de 5,1 s) |
+| `sevenlab-pitch.mp4` | 1920×1080, 60 fps, H.264, CRF 18, 45 s (~10 MB) |
+| `sevenlab-pitch-vertical.mp4` | 1080×1920 para WhatsApp/Instagram (~11 MB) |
+| `poster.jpg` / `poster-vertical.jpg` | Pósters del hero |
 
 Para bajar el peso: `CRF=22 npm run video:render`.
 
@@ -53,7 +53,7 @@ Cuadros sueltos para revisar sin renderizar todo:
 
 | Qué | Archivo |
 |---|---|
-| Duración y orden de escenas | `video/timeline.ts` |
+| Duración, orden de escenas y velocidad (`SPEED`) | `video/timeline.ts` |
 | Escenas 1–7 / 8–15 | `video/scenes/part1.tsx` / `part2.tsx` |
 | Textos fijos, precio, paleta, chat, paquete | `src/shared/tokens.ts` |
 | Revelado por palabra / letra, línea, contador | `src/shared/Text.tsx` |
@@ -65,6 +65,13 @@ Los componentes compartidos son funciones del tiempo `t` (segundos): en el
 video `t` sale del cuadro actual; en la landing, de un reloj que arranca cuando
 la sección entra en pantalla (`useClock`). Con `prefers-reduced-motion` la
 landing muestra directamente el estado final y el video no se reproduce solo.
+
+## Voz en off
+
+El texto está en `docs/voz-en-off.md`, cronometrado con el video. Cuando tengas
+el MP3 de ElevenLabs: guardalo como `public/voz.mp3`, poné `HAS_VOICE = true`
+en `video/timeline.ts`, `VIDEO_HAS_AUDIO = true` en `src/landing/videoConfig.ts`
+y volvé a renderizar.
 
 ## Agregar música (opcional)
 
