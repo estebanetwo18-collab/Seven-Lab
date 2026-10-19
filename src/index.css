@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { @apply bg-white text-ink font-sans antialiased; overflow-x: clip; }
+::selection { background: #4FC08D; color: #0E2A22; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

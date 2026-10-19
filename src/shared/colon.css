@@ -1,0 +1,22 @@
+/* Signo de colón "₡": Manrope no lo trae. Subset de Inter Display (SIL OFL). */
+@font-face {
+  font-family: 'ColonSign';
+  src: url('./fonts/colon-400.woff2') format('woff2');
+  font-weight: 100 450;
+  font-display: swap;
+  unicode-range: U+20A1;
+}
+@font-face {
+  font-family: 'ColonSign';
+  src: url('./fonts/colon-500.woff2') format('woff2');
+  font-weight: 451 600;
+  font-display: swap;
+  unicode-range: U+20A1;
+}
+@font-face {
+  font-family: 'ColonSign';
+  src: url('./fonts/colon-700.woff2') format('woff2');
+  font-weight: 601 900;
+  font-display: swap;
+  unicode-range: U+20A1;
+}
