@@ -26,7 +26,8 @@ const NOMINAL = [
  * 0,8 = todo un 20 % más lento (45 s). Cambia cortes y curvas por igual.
  */
 export const SPEED = 0.8;
-const NOMINAL_TOTAL = 36;
+// 36,8 s de guion = 46 s de video: el cierre del logo respira 1 s más para la voz.
+const NOMINAL_TOTAL = 36.8;
 export const TOTAL_SECONDS = NOMINAL_TOTAL / SPEED;
 export const FPS = 60;
 
@@ -53,7 +54,10 @@ export const SCENES = NOMINAL.map(([id, start], i) => {
   return { id: id as SceneId, from, frames: next - from };
 });
 
-export const HAS_MUSIC = beats.length > 0;
-
-/** Poné en true cuando exista public/voz.mp3 (voz en off de ElevenLabs). */
-export const HAS_VOICE = false;
+/**
+ * Banda sonora (música + voz en off + efectos) generada por video/mezcla.py
+ * en public/audio/banda-sonora.mp3. Si la reemplazás (por ejemplo con una voz
+ * de ElevenLabs), volvé a correr la mezcla y el render.
+ */
+export const SOUNDTRACK = 'audio/banda-sonora.mp3';
+export const HAS_SOUNDTRACK = true;

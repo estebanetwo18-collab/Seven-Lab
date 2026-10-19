@@ -40,8 +40,8 @@ Salidas en `public/video/`:
 
 | Archivo | Qué es |
 |---|---|
-| `sevenlab-pitch.mp4` | 1920×1080, 60 fps, H.264, CRF 18, 45 s (~10 MB) |
-| `sevenlab-pitch-vertical.mp4` | 1080×1920 para WhatsApp/Instagram (~11 MB) |
+| `sevenlab-pitch.mp4` | 1920×1080, 60 fps, H.264, CRF 18, 46 s, con audio (~12 MB) |
+| `sevenlab-pitch-vertical.mp4` | 1080×1920 para WhatsApp/Instagram (~12 MB) |
 | `poster.jpg` / `poster-vertical.jpg` | Pósters del hero |
 
 Para bajar el peso: `CRF=22 npm run video:render`.
@@ -66,21 +66,40 @@ video `t` sale del cuadro actual; en la landing, de un reloj que arranca cuando
 la sección entra en pantalla (`useClock`). Con `prefers-reduced-motion` la
 landing muestra directamente el estado final y el video no se reproduce solo.
 
-## Voz en off
+## Audio: voz en off, música y efectos
 
-El texto está en `docs/voz-en-off.md`, cronometrado con el video. Cuando tengas
-el MP3 de ElevenLabs: guardalo como `public/voz.mp3`, poné `HAS_VOICE = true`
-en `video/timeline.ts`, `VIDEO_HAS_AUDIO = true` en `src/landing/videoConfig.ts`
-y volvé a renderizar.
+El video ya trae banda sonora (`public/audio/banda-sonora.mp3`, −14 LUFS):
 
-## Agregar música (opcional)
+| Pieza | Fuente | Licencia |
+|---|---|---|
+| Música | "Motivating Mornings" — Ahjay Stelino (Mixkit, Corporate, 123 BPM) | Mixkit Stock Music Free License: uso comercial gratis, sin atribución obligatoria |
+| Voz en off | Voz neural es-CR-JuanNeural (Microsoft Edge TTS) | Ver nota abajo |
+| Efectos | Whoosh, clics, tipeo y "select" de Mixkit | Mixkit Sound Effects Free License |
 
-Hoy el video **no tiene audio** (no venía `music.mp3`). Para sumarla:
+La música arranca desde el segundo 4,44 de la canción para que el *drop* caiga
+justo en el corte al montaje de fotos (7,5 s). Los cortes de escena se ajustan
+solos al beat (`video/beats.json`).
 
-1. Poné la pista libre de derechos en `assets/music.mp3`.
-2. `pip install librosa && python video/beats.py` → crea `video/beats.json` y copia la música a `public/music.mp3`.
-3. `npm run video:render` → los cortes se ajustan solos al beat más cercano (±0,15 s) y el audio se incluye.
-4. En `src/landing/videoConfig.ts` poné `VIDEO_HAS_AUDIO = true` para mostrar el botón **Activar sonido**.
+Para regenerar todo:
+
+```bash
+pip install edge-tts numpy librosa
+python video/voz.py        # voz frase por frase → assets/audio/voz/ (guion en guion.tsv)
+python video/mezcla.py     # mezcla con ducking → public/audio/ y video/beats.json
+npm run video:render
+```
+
+- **Cambiar el texto o la voz:** editá `assets/audio/voz/guion.tsv` (id, segundo de inicio, duración máxima, velocidad, texto).
+  Otra voz: `python video/voz.py es-CR-MariaNeural`. Palabras en inglés se escriben como se pronuncian ("lándin péich").
+- **Usar una voz de ElevenLabs:** exportá cada frase como `assets/audio/voz/<id>.wav` (mismos ids) y corré solo `python video/mezcla.py`.
+- **Niveles:** `MUSIC_GAIN_DB`, `DUCK_DB`, `VOICE_GAIN_DB` y la lista `SFX` al inicio de `video/mezcla.py`.
+- **Quitar el audio:** `HAS_SOUNDTRACK = false` en `video/timeline.ts` y `VIDEO_HAS_AUDIO = false` en `src/landing/videoConfig.ts`.
+
+**Nota sobre la voz:** la voz sale del servicio de lectura en voz alta de
+Microsoft Edge, que sirve muy bien para presentar la propuesta, pero no trae
+una licencia comercial explícita. Si el video se va a usar como anuncio
+público, generá las mismas frases con Azure Speech (la misma voz,
+con licencia comercial) o con ElevenLabs.
 
 ## Publicar
 
@@ -96,6 +115,7 @@ Los videos están en `public/video/` y se copian a `dist/` en el build.
 
 - Textos y cifras: `assets/SevenLab_Propuesta_BOLD_Agency_v6.pptx` y el brief.
 - Fotos: Instagram @sevenlab7 · @recuerdos_fullframe (extraídas del PPTX, en `assets/fotos/`).
+- Música y efectos: Mixkit (licencias gratuitas de uso comercial). Voz: Microsoft Edge TTS, es-CR-JuanNeural.
 - Tipografía: Manrope (SIL OFL, autohospedada vía @fontsource). Manrope no trae el signo
   "₡": se agregó un subset de Inter Display (SIL OFL) solo con ese glifo (`src/shared/fonts/`).
 - Análisis del video de referencia: `docs/analisis-referencia.md`.

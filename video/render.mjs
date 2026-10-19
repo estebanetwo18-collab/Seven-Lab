@@ -60,7 +60,7 @@ async function poster(id, frame, file) {
 }
 
 // Cuadro del póster: la franja con "Fuerza. Comunidad. Fisio. Lagunilla." ya revelada (5,1 s).
-const POSTER_FRAME = Math.round((5.1 / 0.8) * 60);
+const POSTER_FRAME = Math.round((5.1 / 0.8) * 60); // franja con la frase ya revelada
 
 if (which === 'all' || which === 'horizontal') await video('SevenLabPitch', 'sevenlab-pitch.mp4');
 if (which === 'all' || which === 'vertical') await video('SevenLabPitchVertical', 'sevenlab-pitch-vertical.mp4');
